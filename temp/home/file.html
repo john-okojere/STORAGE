@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load custom_filters %}
+{% block article %}
+<style>
+    article .item {
+        width: max-content;
+        height: max-content;
+        justify-content: left;
+        align-items: start;
+        gap: 1rem;
+    }
+    table{
+        text-align: left;
+    }
+</style>
+<div>
+    <ul style="display: flex;gap: 1rem;flex-wrap: wrap;">
+        <li><a href="/">Home</a></li>
+        {% if parent_hierarchy %}
+                {% for parent_folder in parent_hierarchy %}
+                    <li><i class="fa fa-angle-right"></i></li>
+                    <li><a href="{% url 'folder' parent_folder.uid %}">{{ parent_folder.name }}</a></li>
+                {% endfor %}
+            {% endif %}
+            {% if file.folder %}
+            <li><i class="fa fa-angle-right"></i></li>
+            <li><a href="{% url 'folder' file.folder.uid %}">{{ file.folder.name }}</a></li>
+       
+            {% endif %}
+       
+    </ul>
+</div>
+<hr>
+<div>
+    
+<div >
+    <h1><i style="font-size: 70px !important;" class="fa fa-file-o"></i></h1>
+    <br>
+    <table class="table ">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <td>{{ file.file|filename }}</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Size</th>
+            <td>{{file.size}}</td>
+          </tr>
+          <tr>
+            <th scope="row">Date Added</th>
+            <td>{{file.date}}</td>
+          </tr>
+          <tr>
+            <th scope="row">UID</th>
+            <td colspan="2">{{file.uid}}</td>
+          </tr>
+          <tr>
+            <th scope="row">Owner</th>
+            <td colspan="2">{{file.user}}</td>
+          </tr>
+        </tbody>
+      </table>
+    
+      <div style="display: flex;gap: 1rem;">
+        <div style="padding: 10px;border: 1px solid rgba(128, 128, 128, 0.578);">View file <a href="{{file.file.url}}"><i class="fa fa-eye"></i></a></div>
+        <div style="padding: 10px;border: 1px solid rgba(128, 128, 128, 0.578);">Download <a href="{{file.file.url}}" download><i class="fa fa-download"></i></a></div>
+      </div>
+</div>
+
+</div>
+{% endblock article %}

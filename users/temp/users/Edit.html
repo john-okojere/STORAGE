@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load static %}
+{% block article %}
+
+<link rel="stylesheet" href="{% static 'css/form.css' %}">
+<style>
+    footer{
+        position: relative;
+    }
+    @media screen and (min-width:960px) {
+        .row{
+            display: grid;
+            grid-template-columns: 50% 50%;
+        }
+    }
+    </style>
+
+<div class="container">
+    <center>
+        <h3>Edit Profile</h3>
+    </center>
+    <form action="" method="post" id="myForm">
+        {% csrf_token %}
+        <div class="row">
+            {{form.as_p }}
+        </div>
+        <div class="submit">
+            <button type="submit" class="cta-btn" style="width:max-content;margin: auto;">Edit Profile</button>
+        </div>
+    </form>
+</div>
+<script>
+    function addClassesToFormFields() {
+        
+        var form = document.getElementById("myForm");
+        var fields = form.querySelectorAll("input, select, textarea");  // Select all input, select, and textarea elements within the form
+
+        for (var i = 0; i < fields.length; i++) {
+            fields[i].classList.add("form-control");
+            fields[i].classList.add("form-control-lg");
+        }
+    }
+    addClassesToFormFields()
+</script>
+{% endblock article %}

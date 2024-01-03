@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block article %}
+
+<div>
+    <ul style="display: flex;align-items: center;gap: 1rem;flex-wrap: wrap;">
+        <li><a href="/">Home</a></li>
+        {% if folder %}
+        <li><i class="fa fa-angle-right"></i></li>
+        <li>{{folder | title }} </li>          
+        {% endif %}
+        {% for subfolder in main_folder.subfolder_set.all %}
+        <li>
+            <li>{{ subfolder.name | title }} <i class="fa fa-angle-right"></i></li>
+            {% if subfolder.subfolder_set.all %}
+                {% include "home/index.html" with folder=subfolder %}
+            {% endif %}
+        </li>
+    {% endfor %}
+    </ul>
+</div>
+<hr>
+<div class="items">
+    <a href="{% url 'addfolder' %}" class="item">
+        <h1><i class="fa fa-folder-plus"></i></h1>
+        <p>Add Folder</p>
+    </a>
+    {% for folder in folders %}
+    <a href="{% url 'folder' folder.uid %}" class="item">
+        <h1><i class="fa fa-folder-o"></i></h1>
+        <p>{{folder.name}}</p>
+    </a>
+    {% endfor %}
+</div>
+{% endblock article %}

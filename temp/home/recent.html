@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load custom_filters %}
+{% block article %}
+
+<div>
+    <ul style="display: flex;gap: 1rem;flex-wrap: wrap;">
+        {% if query %}
+        <li><h5>Result for: {{query}}</h5></li>
+        {% else %}
+        <li><a href="{% url 'recentfile' %}">Recent Files</a></li>
+        {% endif %}
+    </ul>
+</div>
+<hr>
+<div class="items">
+    {% for folder in folders %}
+    <a href="{% url 'folder' folder.uid %}" class="item">
+        <h1><i class="fa fa-folder-o"></i></h1>
+        <p style="word-wrap: break-word;">{{ folder.name }}</p>
+    </a>
+{% endfor %}
+{% for file in files %}
+<a href="{% url 'File' file.uid %}" class="item">
+    <h1><i class="fa fa-file-o"></i></h1>
+    <p style="word-wrap: break-word;">{{ file.file|filename|truncatechars:15 }}</p>
+</a>
+{% endfor %}
+</div>
+
+{% endblock article %}

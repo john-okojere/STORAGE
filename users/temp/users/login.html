@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+{% block article %}
+<link rel="stylesheet" href="{% static 'css/form.css' %}">
+    <div class="form">
+        <form method="post">
+            <fieldset style="max-width: 500px;margin: auto;">
+                <legend><h2>SIGN IN</h2></legend>
+            <div>
+                {% csrf_token %}
+                {{form.as_p}}
+            </div>
+            <div class="submit">
+                <button type="submit">Sign In</button>
+            </div>
+        </fieldset>
+        </form>
+        <div>
+            <fieldset class="or">
+                <legend> OR</legend>
+                <br>
+               <div> <a href="{% url 'register' %}"> Create Account</a> </div>
+            </fieldset>
+        </div>
+    </div>
+{% endblock article %}

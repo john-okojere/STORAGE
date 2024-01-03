@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load static %}
+{% block article %}
+<link rel="stylesheet" href="{% static 'css/form.css' %}">
+<div>
+  
+    <form class="upload-container" id="uploadContainer" enctype="multipart/form-data" method="post">
+        <div class="upload-area" id="uploadArea">
+            {% csrf_token %}
+        {{form.as_p}}       
+        <button type="submit">Upload</button>     
+        </div>
+        
+    </form>
+    <br>
+    {% if folder %}
+        <h4><a href="{% url 'folder' folder.uid %}"><i class="fa fa-arrow-left"></i> Go back</a></h3>
+    {% endif %}
+
+</div>
+{% endblock article %}

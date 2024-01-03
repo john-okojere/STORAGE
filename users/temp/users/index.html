@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% load static %}
+{% block article %}
+
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+<div style="position: relative;">
+    <div class="card teacher-card  mb-3">
+        <div class="card-body  teacher-fulldeatil">
+            <div class="profile pe-xl-4 pe-md-2 pe-sm-4 pe-0 text-center w220 mx-sm-0 mx-auto" style="display: flex;align-items: center;gap: 5%;">
+                <a href="#">
+                    <img src="{{person.profilepic.image.url}}" alt="" style="height: 100px;"
+                        class="avatar xl img-thumbnail shadow-sm">
+                </a>
+                <div class="about-info d-flex align-items-center mt-3 justify-content-center flex-column">
+                    <h3>{{person.last_name |title}} {{person.first_name | title}}</h3>
+                    <div class=" g-2 pt-2">
+                        <div class="">
+                            <p>{{person.email}}</p>
+                        </div>
+                        <div class="">
+                            <p>{{person.phone}}</p>
+                        </div>
+                    </div>
+            </div>
+            </div>
+            <br>
+            <div class="teacher-info w-100">
+                <div class="col-xl-5">
+                    <div class="d-flex align-items-center">
+                        <i class="icofont-address-book"></i>
+                        <span class=" small">{{person.aboutprofile.address}}, {{person.aboutprofile.state}}
+                            {{person.aboutprofile.country}}.</span>
+                    </div>
+                </div>
+                <p class="mt-2 small">{% if person.aboutprofile %}{{person.aboutprofile.about}}{% else %} {% if request.user == person %}<a
+                    href="{% url 'AddAbout' %}"><i class="fa fa-pen"></i> Add your bio</a>  {% endif %}{% endif %}</p>
+            </div>
+        </div>
+    </div>
+    </div>
+    <section style="padding: 10px;">
+        <div class="user_profile time" style="padding: 0;">
+            <div class="prof_detail">
+                <div class="profile_img_box" style="align-self: center;">
+                    <div class="profile_icon_circle"
+                        style="margin: auto;height: 250px;width:250px; background: url('{{person.qr_code}}');background-size: cover;background-position: center;border-radius: 15px;">
+                    </div>
+                </div>
+                <div class="table" style="margin-top: 20px;padding-right: 10px;">
+                    <table class="table table-borderless p-5">
+                        <tbody>
+                            <tr>
+                                <th scope="row">Username</th>
+                                <td>{{person.username | title}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Last Name</th>
+                                <td>{{person.last_name | title}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">First Name</th>
+                                <td>{{person.first_name | title}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Email</th>
+                                <td>{{person.email | title}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row"> Date Of Birth</th>
+                                <td>{{person.date_of_birth}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Phone</th>
+                                <td>{{person.phone}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Role</th>
+                                <td>{{person.role}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Gender</th>
+                                <td>{{person.gender}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Date Joined</th>
+                                <td>{{person.date_joined}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <hr>
+            <div style="text-align: left;margin-top: 10px;">
+                {% if person == request.user %}
+                <form style="justify-content: start;display: flex;border: 1px solid gray;max-width: fit-content;" action="{% url 'upload' %}"
+                    method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="file" name="image" id="file" style="padding-top: 10px;padding-left: 10px; border-top-right-radius: 0 !important;border-bottom-right-radius: 0 !important;height: 40px;">
+                
+                            <button type="submit"  class="" style="width: max-content;border: none;padding: 5px;"> Change Picture</button>
+                    </form>
+                    <div style="display: flex;gap: 10px;margin-top: 10px;">
+                        <a class="btn btn-outline" href="{% url 'editprofile' %}">Edit Profile</a> | 
+                        <a class="btn btn-outline" href="{% url 'editAbout' %}" >Edit Bo</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+    <a href="{% url 'logout' %}" style="color: red; border: 5px;padding: 0.2rem 1rem;border: 1px red solid;"> Sign Out</a>
+</div>
+{% endblock article %}

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load custom_filters %}
+{% block article %}
+
+<div>
+    <ul style="display: flex;gap: 1rem;flex-wrap: wrap;">
+        <li><a href="/">Home</a></li>
+        {% if parent_hierarchy %}
+                {% for parent_folder in parent_hierarchy %}
+                    <li><i class="fa fa-angle-right"></i></li>
+                    <li><a href="{% url 'folder' parent_folder.uid %}">{{ parent_folder.name }}</a></li>
+                {% endfor %}
+            {% endif %}
+            {% if folder %}
+            <li><i class="fa fa-angle-right"></i></li>
+            <li><a href="{% url 'folder' folder.uid %}">{{ folder.name }}</a></li>
+       
+            {% endif %}
+       
+    </ul>
+</div>
+<hr>
+<div class="items">
+    <a href="{% url 'addSubfolder' folder.uid %}" class="item">
+        <h1><i class="fa fa-folder-plus"></i></h1>
+        <p>Add Folder</p>
+    </a>
+    <a href="{% url 'addFile' folder.uid %}" class="item">
+        <h1><i class="fa fa-file-circle-plus"></i></h1>
+        <p>Add File</p>
+    </a>
+    {% for subfolder in folders %}
+        <a href="{% url 'folder' subfolder.uid %}" class="item">
+            <h1><i class="fa fa-folder-o"></i></h1>
+            <p>{{ subfolder.name }}</p>
+        </a>
+    {% endfor %}
+    {% for file in files %}
+        <a href="{% url 'File' file.uid %}" class="item">
+            <h1><i class="fa fa-file-o"></i></h1>
+            <p style="word-wrap: break-word;">{{ file.file|filename|truncatechars:15 }}</p>
+        </a>
+    {% endfor %}
+</div>
+
+{% endblock article %}

@@ -1,0 +1,178 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'assets/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <script src="https://kit.fontawesome.com/7559e3d310.js" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="{% static 'assets/img/logo/gold.png' %}" type="image/x-icon">
+    <title>Layers of Truth Storage</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo"><img src="{% static 'assets/img/logo/gold.png' %}" alt=""> <h2>Storage</h2></div>
+            <div class="search">
+                <form action="{% url 'search' %}" method="get">
+                    <input type="text" name="q" placeholder="Search for a file...">
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+
+            <div class="list menus">
+                <div class="icon">
+                    <div><a id="asideicon"><i class="fa fa-dashboard"></i></a></div>
+                    <div><a id="menusicon"><i class="fa fa-times"></i></a></div>
+                </div>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    {% if user.is_authenticated %}
+                    <li><a href="{% url 'addfolder' %}"><i class="fa fa-add"></i> Folder</a></li>
+                    <li id="list-4"> Hello, {{user.username}} <a href="{% url 'profile' user.username %}"> <img style="height: 40px;" src="{{user.profilepic.image.url}}" alt=""></a></li>
+                    {% else %}
+                    <li id="list-4" class="cta-btn" style="gap: 0;"> <a href="{% url 'login' %}">Sign In</a> | <a href="{% url 'register' %}">Sign Up</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <aside>
+            <ul>
+                <li>
+                    <div>
+                        <div><i class="fa fa-forward-fast"></i> Quick Access</div>
+                        <div><i class="fa fa-caret-down"></i></div>
+                    </div>
+                </li>
+                <ul>
+                    <li>
+                    <div>
+                        <div><a href="{% url 'recentfolder' %}"><i class="fa fa-folder"></i> Recent Folders</a></div>
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <div><a href="{% url 'recentfile' %}"><i class="fa fa-folder"></i> Recent Files</a></div>
+                    </div>
+                </li>
+                </ul>
+            </ul>
+            <ul>
+                <li>
+                    <div>
+                    <div>
+                        <a href="/"><i class="fa fa-home"> </i> Home</a>
+                    </div>
+                    <div><i class="fa fa-caret-down"></i></div>
+                </div>
+                <script src="{% static 'assets/js/jquery-3.5.1.min.js' %}"></script>
+                
+                    <ul>
+                        {% for folder in home_folders %}
+                        <li id="{{folder.uid}}-li">
+                            <div>
+                              <div>
+                                 <a href="{% url 'folder' folder.uid %}"><i class="fa fa-folder"> </i> {{folder.name|title}}</a>
+                             </div>
+                             <div><a id="{{folder.uid}}-arrow" onclick="toggleFolder('{{folder.uid}}')"><i class="fa fa-caret-right"></i></a></div>
+                         </div>
+                         </li>
+                         
+                        {% endfor %}
+                        
+                    </ul>
+                </li>
+            </ul>
+            <script>
+                function toggleFolder(uid) {
+                const folderLi = $(`#${uid}-li`);
+                const caretIcon = $(`#${uid}-arrow > i`);
+
+                if (folderLi.has('ul').length) {
+                    folderLi.children('ul').remove();
+                    caretIcon.removeClass('fa-caret-down').addClass('fa-caret-right');
+                } else {
+                    $.ajax({
+                        url: '/getFolder/' + uid,
+                        method: 'GET',
+                        dataType: 'json',
+                        success: function(data) {
+                            const subfolderList = $('<ul></ul>');
+                            for (let i = 0; i < data.subfolders.length; i++) {
+                                const element = data.subfolders[i];
+                                subfolderList.append(`
+                                    <li id="${element.uid}-li">
+                                        <div>
+                                            <div>
+                                                <a href="/Folder/${element.uid}"><i class="fa fa-folder"> </i> ${element.name}</a>
+                                            </div>
+                                            <div><a id="${element.uid}-arrow" onclick="toggleFolder('${element.uid}')"><i class="fa fa-caret-right"></i></a></div>
+                                        </div>
+                                    </li>
+                                `);
+                            }
+                            folderLi.append(subfolderList);
+                            caretIcon.removeClass('fa-caret-right').addClass('fa-caret-down');
+                        },
+                        error: function(error) {
+                            console.error('Error fetching subfolders:', error);
+                        }
+                    });
+                }
+            }
+                        
+            const menusicon = document.getElementById('menusicon');
+            const menus = document.querySelector('.menus ul');
+            menusicon.innerHTML='<i class="fa fa-user"></i>';
+            menusicon.addEventListener('click', () => {
+                if(menus.style.display == "none"){
+                    menus.style.display = "flex";
+                    menusicon.innerHTML="<i class='fa fa-user-o'></i>"
+                }else{
+                    menus.style.display = "none";
+                    menusicon.innerHTML='<i class="fa fa-user"></i>'
+                }
+            })
+
+            const asideicon = document.getElementById('asideicon');
+            const aside = document.querySelector('aside');
+            asideicon.innerHTML='<i class="fa fa-bars"></i>';
+            asideicon.addEventListener('click', () => {
+                if(aside.style.display == "none"){
+                    aside.style.display = "block";
+                    asideicon.innerHTML="<i class='fa fa-times'></i>"
+                }else{
+                    aside.style.display = "none";
+                    asideicon.innerHTML='<i class="fa fa-bars"></i>'
+                }
+            })
+
+
+            </script>
+            <ul>
+                <li>
+                    <div>
+                        {% if user.is_authenticated %}
+                        <div><a href="{% url 'profile' user.username %}">Profile</a></div>
+                            <div><a href="{% url 'profile' user.username %}"><i class="fa fa-user"></i></a></div>
+                        {% else %}
+                        <div><a href="{% url 'login' %}">Sign In</a> | <a href="{% url 'register' %}">Sign Up</a></div>
+                        <div><i class="fa fa-right-to-bracket"></i></div>
+                        {% endif %}
+                    </div>
+                </li>
+                <li></li>
+            </ul>
+        </aside>
+        <article>
+           {% block article %}
+           
+           {% endblock article %}
+        </article>
+    </main>
+</body>
+</html>

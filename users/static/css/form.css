@@ -1,0 +1,56 @@
+input, button, select{
+    height: 40px;
+    padding:0.5rem 1rem;
+}
+input,select, textarea{
+    width: 100%;
+    border: 1px solid gray;
+    padding:0.5rem 1rem;
+}
+form div p{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    text-align: left;
+    justify-content: start;
+}
+form  div{
+    display: flex;
+    flex-direction: column;
+    padding: 2% 5%;
+    gap: 20px;
+}
+form{
+    text-align: center;
+    align-items: center;
+}
+fieldset{
+    width: 100%;
+    min-width: 300px;
+    text-align: center;
+    border: 1px solid gray;
+}
+.submit{
+    width: fit-content;
+    margin: auto;
+    padding-top: 0;
+}
+button{
+    width: fit-content;
+}
+fieldset.or{
+    border-left: none;
+    border-bottom: none;
+    border-right: none;
+}
+.form{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+form p{
+    text-align: left;
+}
+legend{
+    padding: 10px;
+} 

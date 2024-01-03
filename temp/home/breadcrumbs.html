@@ -1,0 +1,9 @@
+<!-- breadcrumbs.html -->
+{% for breadcrumb in breadcrumbs %}
+    {% if breadcrumb.folder == current_folder %}
+        <li>{{ breadcrumb.folder.name }}</li>
+    {% else %}
+        <li><a href="{% url 'folder' breadcrumb.folder.uid %}">{{ breadcrumb.folder.name }}</a></li>
+    {% endif %}
+    <li><i class="fa fa-angle-right"></i></li>
+{% endfor %}

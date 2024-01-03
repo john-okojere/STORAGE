@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static %}
+{% block article %}
+<link rel="stylesheet" href="{% static 'css/form.css' %}">
+    <style>
+        .form{
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+    </style>
+    <!-- Form -->
+    <form method="post">
+        <fieldset>
+            <legend>
+                <h2> Create an account </h1>
+            </legend>
+            {% csrf_token %}
+            <div class="form">
+                {{form.as_p }}
+            </div>
+            <div class="submit">
+                <button type="submit" class="cta-btn" atl="signin">SIGN UP</button>
+            </div>
+        </fieldset>   
+<br>
+        <fieldset class="or">
+            <legend>OR</legend>
+            <span class="text-muted">Already have an account?   <a href="{% url 'login' %}" class="text-secondary">Sign in here</a></span>
+        </fieldset>
+    </form>
+    <!-- End Form -->
+{% endblock article %}n
