@@ -1,5 +1,5 @@
 import imp
 import os
 import sys
-from BLOG import wsgi
+from STORAGE import wsgi
 application = wsgi.application
