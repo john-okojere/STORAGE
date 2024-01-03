@@ -1,2 +1,7 @@
 db.sqlite3
-media
+
+media/*
+media/QR_CODE/*
+
+!media/default
+!media/QR_CODE
